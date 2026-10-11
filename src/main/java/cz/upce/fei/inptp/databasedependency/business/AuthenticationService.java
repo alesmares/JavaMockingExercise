@@ -21,10 +21,7 @@ public class AuthenticationService {
         this.persondao = new PersonDAO();
     }
 
-    // TODO: add tests
-    // TODO: Authenticate("user", "pass") - Person("user", encryptPwd("pass")) - pass
-    // TODO: Authenticate("user", "invalid") - Person("user", encryptPwd("pass")) - fail
-    // TODO: Authenticate("user", "pass") - nonexistent person - fail
+   
     public boolean Authenticate(String login, String password) {
         Person person = persondao.load("name = '" + login + "'");
         if (person == null) {

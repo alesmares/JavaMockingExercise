@@ -19,17 +19,7 @@ public class AuthorizationService {
         this.persondao = new PersonDAO();
         this.personRolesDao = new PersonRolesDAO();
     }
-
-    // TODO: add tests
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/section/subsection", rw)]) - pass
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/section/subsection", ro)]) - fail
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/section", rw)]) - pass
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/section", ro)]) - fail
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/", rw)]) - pass
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/", ro)]) - fail
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/section/subsection", admin)]) - pass
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/section", admin)]) - pass
-    // TODO: Authorize(person, "/section/subsection", rw) - PersonRole([Role("/", admin)]) - pass
+    
     public boolean Authorize(Person person, String section, AccessOperationType operationType) {
         String roleWhere = persondao.getRoleWhereStringFor(person);
 
@@ -53,7 +43,7 @@ public class AuthorizationService {
                 }
             }
 
-            section = getUpperLever(section);
+            section = getUpperLevel(section);
             //System.out.println("newsection " + section);
         } while (!section.equals(""));
 
@@ -65,13 +55,18 @@ public class AuthorizationService {
     // TODO: "/section/subsection" -> "/section"
     // TODO: "/section" -> "/"
     // TODO: "/" -> ""
-    private String getUpperLever(String section) {
+    private String getUpperLevel(String section) {
         if (section.equals("/")) {
             return "";
         }
+        
+        //Oprava
+        int rootIndex = section.lastIndexOf("/");
+        
+        if(rootIndex == 0)
+            return "/";
 
-        String ret = section.substring(0, section.lastIndexOf("/") + 1);
-        return ret.substring(0, ret.length() - 1);
+        return section.substring(0,rootIndex);
     }
 
 }
